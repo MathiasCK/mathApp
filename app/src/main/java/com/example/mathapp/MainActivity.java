@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             answer.setText("");
             numTries = 0;
             nextEquation();
+            return;
         }
         if (ans > result && numTries >= 1) {
             toast.setText(R.string.less);
