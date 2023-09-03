@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mathe-App</string>
+    <string name="welcome">Willkommen</string>
+    <string name="start">Spiel starten</string>
+    <string name="about">Über das Spiel</string>
+    <string name="settings">Einstellungen</string>
+    <string name="norwegian">Deutsch</string>
+    <string name="english">Englisch</string>
+    <string name="check">Überprüfen</string>
+    <string name="answer">Antwort:</string>
+    <string name="undo">Rückgängig machen</string>
+    <string name="leave">Spiel verlassen</string>
+    <string name="choose_language">Sprache auswählen</string>
+    <string name="choose_amount">Anzahl der gewünschten Aufgaben auswählen</string>
+    <string name="complete">Fertig!</string>
+    <string name="correct">Richtig!</string>
+    <string name="wrong">Falsch!</string>
+    <string name="less">Die Antwort ist kleiner!</string>
+    <string name="greater">Die Antwort ist größer!</string>
+    <string name="leave_complete">Du hast alle Aufgaben abgeschlossen</string>
+    <string name="leave_uncomplete">Bist du sicher, dass du das Spiel verlassen möchtest?</string>
+    <string name="info">Das Spiel zeigt Additionsaufgaben und Tasten mit den Zahlen 0 bis 9 an. Die Antworten werden mit den Tasten eingegeben. Standardmäßig gibt es 5 Aufgaben pro Spiel, aber dies kann in den Einstellungen auf 5, 10 oder 15 geändert werden. Hier kannst du auch die Sprache auswählen.</string>
+</resources>

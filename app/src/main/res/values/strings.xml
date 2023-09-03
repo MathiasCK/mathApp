@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">math-app</string>
+    <string name="welcome">Welcome</string>
+    <string name="start">Start game</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
+    <string name="answer">Answer:</string>
+    <string name="norwegian">German</string>
+    <string name="english">English</string>
+    <string name="check">Check</string>
+    <string name="undo">Undo</string>
+    <string name="leave">Leave game</string>
+    <string name="choose_language">Select language</string>
+    <string name="choose_amount">Choose amount of equations</string>
+    <string name="complete">Game complete!</string>
+    <string name="correct">Correct!</string>
+    <string name="wrong">"Wrong!"</string>
+    <string name="less">The answer is less!</string>
+    <string name="greater">The answer is greater!</string>
+    <string name="leave_complete">You have completed all the equations</string>
+    <string name="leave_uncomplete">Are you sure you want to leave?</string>
+    <string name="info">The game displays addition math problems and buttons with the numbers 0 to 9. You enter answers using the buttons. The standard is that a game consists of 5 math problems, but this can be set to 5, 10, or 15 in the settings. Here, you can also choose the language</string>
+</resources>

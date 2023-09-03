@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="equations">
+        <item>2 + 2</item>
+        <item>10 - 5</item>
+        <item>6 x 3</item>
+        <item>20 ÷ 4</item>
+        <item>8 + 7</item>
+        <item>15 - 9</item>
+        <item>5 x 4</item>
+        <item>18 ÷ 3</item>
+        <item>3 + 9</item>
+        <item>14 - 6</item>
+        <item>7 x 2</item>
+        <item>24 ÷ 4</item>
+        <item>4 + 6</item>
+        <item>12 - 8</item>
+        <item>9 x 3</item>
+    </string-array>
+
+    <string-array name="answers">
+        <item>4</item>
+        <item>5</item>
+        <item>18</item>
+        <item>5</item>
+        <item>15</item>
+        <item>6</item>
+        <item>20</item>
+        <item>6</item>
+        <item>12</item>
+        <item>8</item>
+        <item>14</item>
+        <item>6</item>
+        <item>10</item>
+        <item>4</item>
+        <item>27</item>
+    </string-array>
+
+</resources>
