@@ -18,6 +18,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     
     static int dialogText = R.string.leave_uncomplete;
+    
     PreferenceManager preferenceManager;
     
     ArrayList<String> usedEquations = new ArrayList<>();
@@ -37,6 +38,31 @@ public class MainActivity extends AppCompatActivity {
     int [] buttonIds = { R.id.button_main_0, R.id.button_main_1, R.id.button_main_2, R.id.button_main_3, R.id.button_main_4, R.id.button_main_5, R.id.button_main_6, R.id.button_main_7, R.id.button_main_8, R.id.button_main_9 };
     
     boolean isComplete = false;
+    String currentEquation;
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        
+        outState.putInt("dialogText", dialogText);
+        outState.putStringArrayList("usedEquations", usedEquations);
+        outState.putInt("difficulty", difficulty);
+        outState.putInt("numTries", numTries);
+        outState.putBoolean("isComplete", isComplete);
+        outState.putString("currentEquation", currentEquation);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        
+        dialogText = savedInstanceState.getInt("dialogText");
+        usedEquations = savedInstanceState.getStringArrayList("usedEquations");
+        difficulty = savedInstanceState.getInt("difficulty");
+        numTries = savedInstanceState.getInt("numTries");
+        isComplete = savedInstanceState.getBoolean("isComplete");
+        currentEquation = savedInstanceState.getString("currentEquation");
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.welcome);
     
         preferenceManager = new PreferenceManager(this);
+    
+        if (savedInstanceState != null) {
+            dialogText = savedInstanceState.getInt("dialogText");
+            usedEquations = savedInstanceState.getStringArrayList("usedEquations");
+            difficulty = savedInstanceState.getInt("difficulty");
+            numTries = savedInstanceState.getInt("numTries");
+            currentEquation = savedInstanceState.getString("currentEquation");
+        }
     
         initWelcomeButtons();
     }
@@ -91,24 +125,21 @@ public class MainActivity extends AppCompatActivity {
     
     @SuppressLint("SetTextI18n")
     public void nextEquation() {
-        this.progress.setText(this.usedEquations.size() + "/" + this.equations.length);
+        progress.setText(this.usedEquations.size() + "/" + this.equations.length);
         
         if (this.usedEquations.size() == this.equations.length) {
             gameOver();
             return;
         }
         
-        String selectedEquation = null;
-        
         for (String equation : this.equations) {
             if (!this.usedEquations.contains(equation)) {
-                selectedEquation = equation;
+                this.currentEquation = equation;
                 break;
             }
         }
         
-        this.equation.setText(selectedEquation);
-        this.usedEquations.add(selectedEquation);
+        this.equation.setText(this.currentEquation);
     }
     
     @SuppressLint("ResourceAsColor")
@@ -171,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
             toast.setText(R.string.correct);
             answer.setText("");
             numTries = 0;
+            this.usedEquations.add(this.currentEquation);
             nextEquation();
             return;
         }
