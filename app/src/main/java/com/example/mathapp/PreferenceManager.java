@@ -4,16 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferenceManager {
-    private final String LANG_PREF_KEY = "selected_language";
     private final String DIFFICULTY_PREF_KEY = "selected_difficulty";
     
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     
     public PreferenceManager(Context context) {
         sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
     }
 
     public void setSelectedLanguage(String languageCode) {
+        String LANG_PREF_KEY = "selected_language";
         sharedPreferences.edit().putString(LANG_PREF_KEY, languageCode).apply();
     }
     

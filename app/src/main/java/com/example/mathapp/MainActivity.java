@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,14 +17,12 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     
-    int dialogText = R.string.leave_uncomplete;
-    
-    boolean isComplete = false;
-    int difficulty;
-    
-    int numTries = 0;
+    static int dialogText = R.string.leave_uncomplete;
+    PreferenceManager preferenceManager;
     
     ArrayList<String> usedEquations = new ArrayList<>();
+    
+    String [] equations;
     
     TextView answer;
     TextView info;
@@ -33,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
     TextView progress;
     TextView equation;
     
-    PreferenceManager preferenceManager;
+    int difficulty;
     
-    String [] equations;
+    int numTries = 0;
     
     int [] buttonIds = { R.id.button_main_0, R.id.button_main_1, R.id.button_main_2, R.id.button_main_3, R.id.button_main_4, R.id.button_main_5, R.id.button_main_6, R.id.button_main_7, R.id.button_main_8, R.id.button_main_9 };
     
+    boolean isComplete = false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +49,9 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void initWelcomeButtons() {
-        Button button_welcome_start = findViewById(R.id.button_welcome_start);
-        Button button_welcome_about = findViewById(R.id.button_welcome_about);
-        Button button_welcome_settings = findViewById(R.id.button_welcome_settings);
-    
-        button_welcome_start.setOnClickListener(view -> renderGame());
-        button_welcome_about.setOnClickListener(view -> renderAbout());
-        button_welcome_settings.setOnClickListener(view -> renderSettings());
+        findViewById(R.id.button_welcome_start).setOnClickListener(view -> renderGame());
+        findViewById(R.id.button_welcome_about).setOnClickListener(view -> renderAbout());
+        findViewById(R.id.button_welcome_settings).setOnClickListener(view -> renderSettings());
     }
     
     public void renderGame() {
@@ -69,21 +63,9 @@ public class MainActivity extends AppCompatActivity {
         this.equation = findViewById(R.id.txt_equation);
         this.info = findViewById(R.id.txt_info);
         
-        Button button_check = findViewById(R.id.button_check);
-        button_check.setOnClickListener(view -> check());
-    
-        Button button_undo = findViewById(R.id.button_undo);
-        button_undo.setOnClickListener(view -> undo());
-    
-        Button button_leave = findViewById(R.id.button_leave);
-    
-        button_leave.setOnClickListener(v -> {
-            if (this.isComplete) {
-                dialogText = R.string.leave_complete;
-            }
-            MyDialogFragment dialogFragment = new MyDialogFragment();
-            dialogFragment.show(getSupportFragmentManager(), "my_dialog");
-        });
+        findViewById(R.id.button_check).setOnClickListener(view -> check());
+        findViewById(R.id.button_undo).setOnClickListener(view -> undo());
+        findViewById(R.id.button_leave).setOnClickListener(v -> displayDialog());
     
         initControls();
         handleDifficulty();
@@ -93,26 +75,18 @@ public class MainActivity extends AppCompatActivity {
     public void renderAbout() {
         setContentView(R.layout.about);
         
-        Button button_about_start = findViewById(R.id.button_about_start);
-        button_about_start.setOnClickListener(view -> renderGame());
+        findViewById(R.id.button_about_start).setOnClickListener(view -> renderGame());
     }
     
     public void renderSettings() {
         setContentView(R.layout.settings);
-        
-        Button button_settings_start = findViewById(R.id.button_settings_start);
-        Button button_settings_5 = findViewById(R.id.button_settings_5);
-        Button button_settings_10 = findViewById(R.id.button_settings_10);
-        Button button_settings_15 = findViewById(R.id.button_settings_15);
-        Button button_settings_norwegian = findViewById(R.id.button_settings_norwegian);
-        Button button_settings_english = findViewById(R.id.button_settings_english);
-        
-        button_settings_start.setOnClickListener(view -> renderGame());
-        button_settings_5.setOnClickListener(view -> selectDifficulty("5"));
-        button_settings_10.setOnClickListener(view -> selectDifficulty("10"));
-        button_settings_15.setOnClickListener(view -> selectDifficulty("15"));
-        button_settings_norwegian.setOnClickListener(view -> selectLanguage("no"));
-        button_settings_english.setOnClickListener(view -> selectLanguage("en"));
+    
+        findViewById(R.id.button_settings_start).setOnClickListener(view -> renderGame());
+        findViewById(R.id.button_settings_5).setOnClickListener(view -> selectDifficulty("5"));
+        findViewById(R.id.button_settings_10).setOnClickListener(view -> selectDifficulty("10"));
+        findViewById(R.id.button_settings_15).setOnClickListener(view -> selectDifficulty("15"));
+        findViewById(R.id.button_settings_norwegian).setOnClickListener(view -> selectLanguage("no"));
+        findViewById(R.id.button_settings_english).setOnClickListener(view -> selectLanguage("en"));
     }
     
     @SuppressLint("SetTextI18n")
@@ -137,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
         this.usedEquations.add(selectedEquation);
     }
     
+    @SuppressLint("ResourceAsColor")
+    public void check() {
+        int ans = Integer.parseInt(answer.getText().toString());
+        int result = handleEquation();
+        
+        messageToast(ans, result);
+    }
+    
     public void undo() {
         String currentText = this.answer.getText().toString();
     
@@ -144,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
             String updatedText = currentText.substring(0, currentText.length() - 1);
             this.answer.setText(updatedText);
         }
+    }
+    
+    public void displayDialog() {
+        if (this.isComplete) {
+            dialogText = R.string.leave_complete;
+        }
+        MyDialogFragment dialogFragment = new MyDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), "my_dialog");
     }
     
     private void initControls() {
@@ -155,14 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 this.answer.append(button.getText());
             });
         }
-    }
-    
-    @SuppressLint("ResourceAsColor")
-    public void check() {
-        int ans = Integer.parseInt(answer.getText().toString());
-        int result = handleEquation();
-        
-        messageToast(ans, result);
     }
     
     public int handleEquation() {
@@ -210,11 +192,8 @@ public class MainActivity extends AppCompatActivity {
             button.setEnabled(false);
         }
         
-        Button button_check = findViewById(R.id.button_check);
-        button_check.setEnabled(false);
-        
-        Button button_undo = findViewById(R.id.button_undo);
-        button_undo.setEnabled(false);
+        findViewById(R.id.button_check).setEnabled(false);
+        findViewById(R.id.button_undo).setEnabled(false);
     
         this.toast.setText(R.string.complete);
         this.answer.setText("");
@@ -240,18 +219,19 @@ public class MainActivity extends AppCompatActivity {
         
         this.progress.setText(usedEquations.size() + "/" + equations.length);
     }
+    
     public void selectDifficulty(String difficulty) {
         this.preferenceManager.setDifficulty(difficulty);
     }
     
-    public void selectLanguage(String languageCode) {
-        Locale newLocale = new Locale(languageCode);
+    public void selectLanguage(String language) {
+        Locale newLocale = new Locale(language);
         Locale.setDefault(newLocale);
         Configuration config = new Configuration();
         config.setLocale(newLocale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     
-        this.preferenceManager.setSelectedLanguage(languageCode);
+        this.preferenceManager.setSelectedLanguage(language);
         
         recreate();
     }
